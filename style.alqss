@@ -1,0 +1,40 @@
+button{
+   color: RGB(20,20,20);
+   border-width:1px;
+   border-color: RGB(120,120,120);
+   text-color: RGB(215,215,215);
+   font-size: 15px;
+   font-family: Natasha;
+   position-x: 100px;
+   position-y: 20px;
+   width: 4w%;
+   height: 2w%;
+   anchor: nw;
+}
+button_2{
+   color: RGB(20,20,20);
+   border-width:1px;
+   border-color: RGB(120,120,120);
+   text-color: RGB(215,215,215);
+   font-size: 15px;
+   font-family: Natasha;
+   position-x: 100px;
+   position-y: 80px;
+   width: 4w%;
+   height: 2w%;
+   anchor: nw;
+}
+label_2{
+   position-x:10px;
+   position-y: 20px;
+   anchor: nw;
+}
+frame{
+   width: 100w%;
+   height: 10h%;
+   position-x: 0px;
+   position-y: 0px;
+   anchor: nw;
+   color: RGB(250,100,10);
+   
+}
