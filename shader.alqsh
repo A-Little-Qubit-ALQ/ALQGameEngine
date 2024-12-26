@@ -1,0 +1,19 @@
+#There are main shadering elements:
+# Viewport
+vp:= System->viewport();
+# You must fill it black to make screen clear
+vp->fill(RGB(0,0,0));
+# Now process all light sources
+foreach pixel from vp->Pixels(){
+    foreach light from System.lights{
+    # if it is Omnilight process by circle
+        if type(light) is Omnilight{
+            cur_dist:=dist(pixel,light);
+            power:=light.power/exp(cur_dist/light.distance);
+            pixel->add_color(light.color,power);
+        }
+    }
+    pixel->RGBCOUNT();
+    vp->Matrix()->put_pixel(pixel);
+}
+vp->Matrix()->show();

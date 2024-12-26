@@ -1,7 +1,9 @@
+import re
 from json import *
 from pathlib import *
 from functools import singledispatchmethod
 from BasicStyling import RGB,Size
+from re import findall
 class Config():
     def __init__(self,config_dir=".",file_name="settings",format=".alqconf"):
         self.dir=config_dir
@@ -43,10 +45,29 @@ class StyleSheet():
                 if ":" in i:
                     id,val=i.split(":")
                     if "RGB" in val:
-                        print(val.replace("RGB(","").replace(");","").split(","))
                         val=RGB(*list(map(int,val.replace("RGB(","").replace(");","").split(","))))
                     elif "%" in val or "vh" in val or "vw" in val or "px" in val:
                         val=Size(val,window=self.window)
                     self.style[current][id.replace(" ","")]=val
                 if "}" in i:
                     current=None
+class Shader():
+    def __init__(self, path, window):
+            self.shader_code = open(path, "r+").read()
+            self.logic_blocks = """"""
+            self.window = window
+            self.shader_Keywords={"foreach": "for"," from ":" in ","Omnilight":"TopViewOmni","System":"self"," is ":"==",":=":"="}
+    def process(self):
+            current = None
+            for i in self.shader_code.split("\n"):
+               if "#" in i:
+                   ni=i.split("#")[0]
+               else:
+                  ni=i
+               ni=ni.replace("->",".").replace("{",":").replace("}","").replace(";","")
+               for key,val in self.shader_Keywords.items():
+                   ni=re.sub(key,val,ni)
+               for i in re.findall("\[.*\.\..*:.*\]",ni):
+                   ni=ni.replace(i,i.replace("[","alqrange(").replace("..",",").replace(":",",").replace("]",")"))
+               self.logic_blocks+=ni+"\n"
+

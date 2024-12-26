@@ -1,8 +1,6 @@
 import tkinter
 from functools import singledispatchmethod
-class RGB():
-    r,g,b=0,0,0
-    ...
+
 class RGB():
     def __init__(self,r,g,b):
         self.r=r
@@ -11,13 +9,16 @@ class RGB():
 
     @singledispatchmethod
     def __add__(self, other):
-        raise f"You can`t sum RGB with any variable of type {type(other)}"
-    @__add__.register
-    def _(self, other:RGB):
-        self.r+=other.r
-        self.g+=other.g
-        self.b+=other.b
+        if type(other) == RGB:
+            self.r+=other.r
+            self.g+=other.g
+            self.b+=other.b
+            self.r = round(self.r) % 256
+            self.g = round(self.g) % 256
+            self.b = round(self.b) % 256
 
+        else:
+            raise Exception(f"You can`t sum RGB with any variable of type {type(other)}")
     @__add__.register
     def _(self, other: int):
         self.r += other
@@ -26,21 +27,37 @@ class RGB():
 
     @singledispatchmethod
     def __mul__(self, other):
-        raise f"You can`t sum multiply with any variable of type {type(other)}"
+        if type(other)==RGB:
+            self.r *= other.r
+            self.g *= other.g
+            self.b *= other.b
 
-    @__mul__.register
-    def _(self, other: RGB):
-        self.r *= other.r
-        self.g *= other.g
-        self.b *= other.b
+        else:
+            raise Exception(f"You can`t multiply RGB with any variable of type {type(other)}")
 
     @__mul__.register
     def _(self, other: int):
         self.r *= other
         self.g *= other
         self.b *= other
+
+    @__mul__.register
+    def _(self, other: float):
+        self.r *= other
+        self.g *= other
+        self.b *= other
+        self.r=round(self.r)%256
+        self.g = round(self.g)%256
+        self.b = round(self.b)%256
     def hex(self):
+        self.r=round(self.r)
+        self.g = round(self.g)
+        self.b = round(self.b)
         return f"#{'0'*(2-len(hex(self.r)[2:]))+hex(self.r)[2:]}{'0'*(2-len(hex(self.g)[2:]))+hex(self.g)[2:]}{'0'*(2-len(hex(self.b)[2:]))+hex(self.b)[2:]}"
+    def copy(self):
+        return RGB(self.r,self.g,self.b)
+    def PIL(self):
+        return [self.r,self.g,self.b]
 class Size():
     def __init__(self, x,window:tkinter.Tk):
         self.window=window
